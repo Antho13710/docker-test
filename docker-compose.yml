@@ -1,0 +1,44 @@
+version: '2'
+services:
+  db:
+    image: mariadb
+    container_name: mariadb_symfony
+    volumes:
+      - dbdata:/var/lib/mysql
+    restart: always
+    environment: 
+      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    networks: 
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin_symfony
+    restart: always
+    depends_on: 
+      - db
+    ports: 
+      - 8080:80
+    environment: 
+      PMA_HOST: db
+    networks: 
+      - dev    
+
+  app:
+    depends_on:
+      - db
+    build: .
+    container_name: app_symfony
+    volumes: 
+      - /etc/apache2/apache2.conf:/etc/apache2/apache2.conf
+    restart: always
+    ports:
+      - 8000:80
+    networks: 
+      - dev
+
+networks: 
+  dev:
+
+volumes: 
+  dbdata: {}
