@@ -30,7 +30,7 @@ services:
     build: .
     container_name: app_symfony
     volumes: 
-      - /etc/apache2/apache2.conf:/etc/apache2/apache2.conf
+      - ./docker/apache2.conf:/etc/apache2/apache2.conf
     restart: always
     ports:
       - 8000:80
